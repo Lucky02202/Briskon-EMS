@@ -1,11 +1,4 @@
-.lol {
-  /* width: 100px; */
-  height: 100px;
-  border: 1px solid #000;
-}
+ul li:hover {
+  background-color: #DBDCFE;
 
-.lol2 {
-  /* width: 100px; */
-  height: 100px;
-  border: 1px solid #ff0000;
 }
