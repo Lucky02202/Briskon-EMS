@@ -1,0 +1,38 @@
+.search-icon {
+  right: 1.6rem;
+  top: 0.65rem;
+}
+
+.box {
+  height: 50px;
+  width: 50px;
+  background-color: lightblue;
+}
+
+.user {
+  min-height: 70px;
+  max-height: 70px;
+  background-color: #EEEFFA;
+}
+
+.user:hover {
+  background-color: #DBDCFE;
+}
+
+.messages-count {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.616);
+  height: 20px;
+  width: 20px;
+  background: orange;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+
+.chat-users::-webkit-scrollbar {
+  width: 5px;
+}

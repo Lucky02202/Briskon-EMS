@@ -19,14 +19,19 @@
 </head>
 
 <body>
+      <!-- Main Container -->
       <div class="container-fluid d-flex m-0 p-2 vh-100 gap-2 bg-background ">
+
+            <!-- Sidebar -->
             <aside class="custom-20 h-100 bg-main rounded-5 d-flex flex-column align-items-center overflow-auto">
                   <img src="./Assets/briskon-logo-1-1.png"
                        alt="logo"
                        class="img-fluid pt-2"
                        style="width: 70%;">
                   <hr class="bg-black w-75">
-                  <ul class="list-group list-unstyled gap-2 d-flex flex-column align-items-center w-100 hover">
+
+                  <!-- List of Sidebar Items -->
+                  <ul class="list-group list-unstyled gap-2 d-flex flex-column align-items-center w-100 hover fs-6">
                         <li class="p-2 w-75 rounded-4 fw-bold d-flex gap-2 align-items-center">
                               <i class="fa-solid fa-tv  custom-10"></i>
                               <p class="m-0 p-0 custom-90 text-start">Dashboard</p>
@@ -59,7 +64,7 @@
                               <i class="fa-solid fa-table-list custom-10"></i>
                               <p class="m-0 p-0 custom-90 text-start">Holiday List</p>
                         </li>
-                        <li class="p-2 w-75 rounded-4 fw-bold d-flex gap-2 align-items-center">
+                        <li class="p-2 w-75 rounded-4 fw-bold d-flex gap-2 align-items-center bg-accent">
                               <i class="fa-solid fa-message custom-10"></i>
                               <p class="m-0 p-0 custom-90 text-start">Chats</p>
                         </li>
@@ -72,8 +77,17 @@
                               <p class="m-0 p-0 custom-90 text-start">My Account</p>
                         </li>
                   </ul>
+                  <!-- List End -->
             </aside>
-            <main class="custom-80 h-100 rounded-5 bg-main"></main>
+            <!-- Sidebar End -->
+
+            <!-- Chat Container -->
+            <main class="custom-80 h-100 rounded-5 bg-main">
+                  <iframe src="./chat/chat.html"
+                          class="w-100 h-100 rounded-5 p-3 bg-main"
+                          frameborder="0"></iframe>
+            </main>
+            <!-- Chat Container End -->
       </div>
 
       <script src="https://kit.fontawesome.com/74954d4a6a.js"
