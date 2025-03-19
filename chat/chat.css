@@ -52,10 +52,21 @@
 .send-button {
   right: 1.5rem;
   border: none;
+  transition: none !important;
+}
+
+.send-button:focus {
+  cursor: pointer;
+  border: none;
+}
+
+input {
+  transition: none !important;
 }
 
 input:focus {
   outline: none !important;
   box-shadow: none !important;
   border: none !important;
+  transition: none !important;
 }

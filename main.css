@@ -54,67 +54,87 @@
 
 /* Custom width */
 .custom-10 {
-  width: 10%;
+  width: 10% !important;
 }
 
 .custom-20 {
-  width: 20%;
+  width: 20% !important;
 }
 
 .custom-25 {
-  width: 25%;
+  width: 25% !important;
 }
 
 .custom-30 {
-  width: 30%;
+  width: 30% !important;
+}
+
+.custom-35 {
+  width: 35% !important;
+}
+
+.custom-60 {
+  width: 60% !important;
 }
 
 .custom-70 {
-  width: 70%;
+  width: 70% !important;
 }
 
 .custom-75 {
-  width: 75%;
+  width: 75% !important;
 }
 
 .custom-80 {
-  width: 80%;
+  width: 80% !important;
 }
 
 .custom-90 {
-  width: 90%;
+  width: 90% !important;
 }
 
 
 /* Custom height */
 .custom-h-10 {
-  height: 10%;
+  height: 10% !important;
 }
 
 .custom-h-20 {
-  height: 20%;
+  height: 20% !important;
 }
 
 .custom-h-25 {
-  height: 25%;
+  height: 25% !important;
 }
 
 .custom-h-30 {
-  height: 30%;
+  height: 30% !important;
+}
+
+.custom-h-40 {
+  height: 40% !important;
+}
+
+.custom-h-60 {
+  height: 60% !important;
+}
+
+.custom-h-50 {
+  height: 50% !important;
 }
 
 .custom-h-70 {
-  height: 70%;
+  height: 70% !important;
 }
 
 .custom-h-75 {
-  height: 75%;
+  height: 75% !important;
 }
 
 .custom-h-80 {
-  height: 80%;
+  height: 80% !important;
 }
 
 .custom-h-90 {
-  height: 90%;
+  height: 90% !important;
 }

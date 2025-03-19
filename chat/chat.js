@@ -31,7 +31,6 @@ function renderChatHeader(element){
   </button>
   `
   document.getElementById("chatbox-header").innerHTML = chatHeader;
-  // document.getElementById("chatbox-body").innerHTML = chatFooter;
   document.getElementById("message-input").innerHTML = chatFooter;
   chatFooterWhole.style.backgroundColor = "#DBDCFE";
 
