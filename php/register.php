@@ -4,7 +4,7 @@ session_start();
 include 'db.php';
 
 if (isset($_SESSION['username'])) {
-  header("Location: chat.php");
+  header("Location: ../test/chat.php");
   exit();
 }
 
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($stmt->execute()) {
       $_SESSION['username'] = $username;
-      header("Location: chat.php");
+      header("Location: ../test/chat.php");
     } else {
       $error = "Registration Failed";
     }

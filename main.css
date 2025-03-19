@@ -30,6 +30,9 @@
   background-color: #EFF0F2 !important;
 }
 
+.bg-button {
+  background-color: rgb(243, 96, 43);
+}
 
 /* Define custom text colors */
 .text-primary {
@@ -92,7 +95,6 @@
 .custom-90 {
   width: 90% !important;
 }
-
 
 /* Custom height */
 .custom-h-10 {
