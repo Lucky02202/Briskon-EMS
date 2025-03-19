@@ -12,7 +12,7 @@ function renderChatHeader(element){
         <span class="text-success small">●</span><span class="small">online</span>
       </div>
     </div>
-    <div class="pe-2">
+    <div class="pe-2 border border-2">
       <i class="fa-solid fa-ellipsis-vertical"></i>
     </div>
   </div>
@@ -35,3 +35,35 @@ function renderChatHeader(element){
   chatFooterWhole.style.backgroundColor = "#DBDCFE";
 
 }
+
+// function getRandomIntInclusive(min, max) {
+//   min = Math.ceil(min);
+//   max = Math.floor(max);
+//   return Math.floor(Math.random() * (max - min + 1) + min);
+// }
+
+// async function loadUsers() {
+//     const response = await fetch('../php/get_user.php');
+//     const users = await response.json();
+//     const userList = document.getElementById('user-list'); // Add this ID in HTML
+
+//     userList.innerHTML = '';
+
+//     users.forEach(user => {
+//         const userDiv = document.createElement('div');
+//         userDiv.className = 'd-flex align-items-center gap-3 p-2 bg-light mb-2 rounded shadow-sm user-card';
+//         userDiv.setAttribute('onclick', 'renderChatHeader(this)');
+
+//         userDiv.innerHTML = `
+//             <img src="../Assets/${getRandomIntInclusive(1,6)}.png" 
+//                  class="rounded-circle" style="height:50px; width:50px;" alt="profile" >
+//             <div>
+//                 <p class="m-0 fw-bold username">${user.username}</p>
+//                 <span class="text-success small">●</span><span class="small">online</span>
+//             </div>
+//         `;
+//         userList.appendChild(userDiv);
+//     });
+// }
+
+// window.onload = loadUsers;
