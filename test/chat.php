@@ -44,7 +44,7 @@ $username = $_SESSION['username'];
         <div class="custom-h-10 text-center fs-5 text-white">
           select a User to chat
         </div>
-        <div class="text-center d-flex overflow-auto flex-column gap-2">
+        <div class="text-center d-flex overflow-hidden flex-column gap-2">
           <ul class="list-unstyled">
             <?php
             // Fetch all users except current user
@@ -54,7 +54,8 @@ $username = $_SESSION['username'];
               while ($row = $result->fetch_assoc()) {
                 $user = $row['username'];
                 $user = ucfirst($user);
-                echo "<li class='p-2 mt-2 mb-2 bg-accent fs-6 fw-semibold'><a class='text-decoration-none text-black' href=chat.php?user=$user'>$user</a></li>";
+                echo "<li class='p-2 mt-2 mb-2 bg-accent fs-6 fw-semibold'>
+                <a class='text-decoration-none text-black' href=chat.php?user=$user'>$user</a></li>";
               }
             }
             ?>
