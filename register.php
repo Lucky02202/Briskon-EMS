@@ -4,7 +4,7 @@ session_start();
 include 'db.php';
 
 if (isset($_SESSION['username'])) {
-  header("Location: ../test/Chat/chat.php");
+  header("Location: ./chat.php");
   exit();
 }
 
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($stmt->execute()) {
       $_SESSION['username'] = $username;
-      header("Location: ../test/Chat/chat.php");
+      header("Location: ./chat.php");
     } else {
       $error = "Registration Failed";
     }
@@ -49,7 +49,7 @@ $conn->close();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet"
-    href="../main.css">
+    href="./chat.css">
   <link rel="stylesheet"
     href="./styles/register.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"

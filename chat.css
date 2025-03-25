@@ -23,6 +23,10 @@
   background-color: #DBDCFE !important;
 }
 
+.bg-accent-dark {
+  background-color: #bfc1ff !important;
+}
+
 .bg-secondary-accent {
   background-color: #EEEFFA !important;
 }
@@ -42,6 +46,10 @@
 
 .text-background {
   color: #202022 !important;
+}
+
+.text-gray {
+  color: #515151ae !important;
 }
 
 .text-accent {
@@ -142,6 +150,17 @@
   height: 90% !important;
 }
 
+/* profile image */
+.profile-pic {
+  width: 50px;
+  height: 50px;
+}
+
+.profile-pic-chat {
+  width: 40px;
+  height: 40px;
+}
+
 /* side css */
 ul li:hover {
   background-color: #DBDCFE;
@@ -170,7 +189,7 @@ ul li:hover {
   background-color: #EEEFFA;
 }
 
-.user:hover {
+.user:hover, .dropdown-user:hover {
   background-color: #DBDCFE;
   cursor: pointer;
 }
@@ -196,7 +215,7 @@ ul li:hover {
 }
 
 .chat-users::-webkit-scrollbar {
-  width: 5px;
+  display: none !important;
 }
 
 .send-button {
@@ -219,4 +238,105 @@ input:focus {
   box-shadow: none !important;
   border: none !important;
   transition: none !important;
+}
+
+/* Login Css */
+.bg-login-background {
+  background-color: #323232 !important;
+}
+
+.text-login-secondary {
+  color: #787777;
+}
+
+.text-orange {
+  color: #FF5A30;
+}
+
+.login-button {
+  background-color: #FF5A30;
+  border: none;
+  outline: none;
+  transition: none;
+}
+
+.login-button:hover {
+  background-color: #ff4d21;
+}
+
+.login-input {
+  background-color: #4F4F4F;
+  border: none !important;
+  outline: none !important;
+  color: #F9FAFC !important;
+}
+
+.login-input::placeholder {
+  color: #ebeaea90 !important;
+}
+
+/* Register Css */
+.bg-login-background {
+  background-color: #323232 !important;
+}
+
+.text-login-secondary {
+  color: #787777;
+}
+
+.text-orange {
+  color: #FF5A30;
+}
+
+.login-button {
+  background-color: #FF5A30;
+  border: none;
+  outline: none;
+  transition: none;
+}
+
+.login-button:hover {
+  background-color: #ff4d21;
+}
+
+.login-input {
+  background-color: #4F4F4F;
+  border: none !important;
+  outline: none !important;
+  color: #F9FAFC !important;
+}
+
+.login-input::placeholder {
+  color: #ebeaea90 !important;
+}
+
+.file-container {
+  border: 2px dashed #4f4f4f !important;
+}
+
+.file-upload {
+  background-color: #4F4F4F !important;
+  width: 100%;
+  border-radius: 8px !important;
+}
+
+
+/* Dynamic code css */
+.chatbox-vertical:hover {
+  background-color: #c7c9ff;
+}
+
+.myClass {
+  display: none !important;
+}
+
+/* Chat time */
+.chat-time {
+  font-size: 8px !important;
+  color: #4F4F4F;
+}
+
+/* hide scrollbar */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none !important;
 }

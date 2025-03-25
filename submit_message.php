@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $message = $conn->real_escape_string($_POST['message']);
 
   $sql = "INSERT INTO chat_messages (sender, receiver, message) VALUES ('$sender', '$receiver', '$message')";
-  $conn->query($sql);
+  // $conn->query($sql);
 
   if ($conn->query($sql) === TRUE) {
     echo "Inserted";

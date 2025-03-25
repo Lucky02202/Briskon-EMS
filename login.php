@@ -4,7 +4,7 @@ session_start();
 include('./db.php');
 
 if (isset($_SESSION['username'])) {
-  header("Location: ../test/Chat/chat.php");
+  header("Location: ./chat.php");
   exit();
 }
 
@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $result = $conn->query($sql);
   if ($result->num_rows == 1) {
     $_SESSION['username'] = $username;
-    header("Location: ../test/Chat/chat.php");
+    header("Location: ./chat.php");
     exit();
   } else {
     $error = "Invalid Username or Password.";
@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet"
-    href="../main.css">
+    href="./chat.css">
   <link rel="stylesheet"
     href="./styles/login.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <div class="container-fluid m-0 p-2 bg-background vh-100 d-flex align-items-center justify-content-center">
     <main class="custom-30 custom-h-80 bg-main rounded-5 p-2">
       <div class="custom-h-10 w-100 d-flex align-items-center justify-content-center">
-        <img src="../Assets/briskon-logo-1-1.png" class="h-100" alt="logo">
+        <img src="./Assets/briskon-logo-1-1.png" class="h-100" alt="logo">
       </div>
       <div class="custom-h-90 w-100 bg-black rounded-5 p-2">
         <div class="p-3 custom-h-40 rounded-5  d-flex flex-column gap-2 justify-content-center">
