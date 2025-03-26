@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 include("./db.php");
 
@@ -131,13 +130,12 @@ if (isset($_GET['user'])) {
 
             <!-- Chat Options -->
             <div class="container-fluid d-flex justify-content-between position-relative">
+              <!-- 
               <div class="box rounded-3 d-flex justify-content-center align-items-center " id="user-list-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fa-solid fa-plus"></i>
-                <ul class="dropdown-menu custom-90 bg-black p-0 m-0 vh-75" aria-labelledby="user-list-dropdown" style="max-height: 60vh; overflow: auto;">
-                  <!-- php code for dropdown -->
-                  <?php
-
-
+                <ul class="dropdown-user-list dropdown-menu custom-90 bg-main p-0 m-0 vh-75 hide-scrollbar p-1" aria-labelledby="user-list-dropdown" style="max-height: 60vh; overflow: auto;">
+                  php code for dropdown
+                  php
                   $sql = "SELECT username from users where username != '$username' order by username";
                   $random = getRandomIntInclusive(1, 6);
                   $result = $conn->query($sql);
@@ -147,13 +145,13 @@ if (isset($_GET['user'])) {
                       $user = $row['username'];
                       $user = ucfirst($user);
                       echo "
-                        <li class='w-100 bg-main'>
-                          <div class='d-flex gap-1 align-items-center'>
-                            <div class='user-image custom-20'>
+                        <li class='user-list-dropdown-item w-100 bg-accent user-list-item mb-1'>
+                          <div class='d-flex gap-1 align-items-center p-1'>
+                            <div class='user-image custom-20 p-1'>
                               <img src='Assets/1.png'
                                 alt='user'
                                 class='img-fluid rounded-circle'
-                                style='min-width:40px;width:100%;'>
+                                style='width: 100%; height: 100%; object-fit: cover; /* Or use 'contain' if you don't want cropping */ display: block;'>
                             </div>
                             <div class='d-flex flex-column justify-content-between custom-80'>
                               <p class='username m-0 p-0 fw-bold '>$user</p>
@@ -165,6 +163,7 @@ if (isset($_GET['user'])) {
                   ?>
                 </ul>
               </div>
+               -->
               <div class="box rounded-3 d-flex justify-content-center align-items-center">
                 <i class="fa-solid fa-box-archive"></i>
               </div>
@@ -198,24 +197,32 @@ if (isset($_GET['user'])) {
                   $randomNumber = getRandomIntInclusive(1, 6);
                   $user = $row['username'];
                   $user = ucfirst($user);
+
+                  // Fetch the latest message between the current user and this user
+                  $latestMsgQuery = "SELECT message FROM chat_messages 
+                      WHERE (sender='$username' AND receiver='$user') 
+                          OR (sender='$user' AND receiver='$username') 
+                        ORDER BY id DESC LIMIT 1";
+                  $msgResult = $conn->query($latestMsgQuery);
+                  $latestMessage = ($msgResult->num_rows > 0) ? $msgResult->fetch_assoc()['message'] : " ";
+                  if ($msgResult->num_rows > 0) {
+                  }
                   echo "
-                    <a class=' text-reset text-decoration-none' href='chat.php?user=$user&num=$randomNumber'>
-                      <div class='user d-flex align-items-center p-2 rounded-3 gap-2'>
-                      <div class='user-image custom-20'>
-                      <img src='./Assets/$randomNumber.png'
-                          alt='user'
-                          class='img-fluid rounded-circle profile-pic'>
-                          </div>
-                          <div class='d-flex flex-column justify-content-between custom-80'>
+                    <a class='text-reset text-decoration-none' href='chat.php?user=$user&num=$randomNumber'>
+                      <div class='user d-flex align-items-center p-2 rounded-3 gap-2 h-100'>
+                        <div class='user-image custom-20'>
+                            <img src='./Assets/$randomNumber.png' alt='user' class='img-fluid rounded-circle profile-pic'>
+                        </div>
+                        <div class='d-flex flex-column justify-content-between custom-60 h-100'>
                           <p class='username m-0 p-0 fw-bold '>$user</p>
-                          <p class='chat-peek m-0 p-0 fs-6 overflow-hidden'>Hey! How are you?</p>
-                          </div>
-                          <div class='d-flex flex-column align-items-end custom-20'>
-                          <div class='time'>10:20</div>
+                          <p class='chat-peek m-0 p-0 fs-6 overflow-hidden text-black-50'>$latestMessage</p>
+                        </div>
+                        <div class='d-flex flex-column align-items-end justify-content-between custom-20 h-100'>
                           <div class=' messages-count'>3</div>
-                          </div>
-                          </div>
-                      </a>";
+                          <div class='chat-time2'>11:20</div>
+                        </div>
+                      </div>
+                    </a>";
                 }
               }
               ?>
@@ -228,19 +235,35 @@ if (isset($_GET['user'])) {
           <!-- Chatbox -->
           <div class="chatbox overflow-auto custom-75 bg-tertiary rounded-4 d-flex flex-column border gap-2   border-1" id="chatbox">
             <?php if ($showchatbox): ?>
-
               <!-- Chatbox header -->
               <div class="chatbox-header d-flex align-items-center justify-content-between custom-h-10"
                 id="chatbox-header">
                 <?php
+                $sql = "SELECT last_seen FROM users WHERE username = '$selectedUser'";
+                $result = $conn->query($sql);
+                $onlineStatus = '';
+                if ($result->num_rows > 0) {
+                  $row = $result->fetch_assoc();
+                  $lastSeen = strtotime($row['last_seen']);
+                  $currentTime = time();
+                  $diff = $currentTime - $lastSeen;
+                  if ($diff < 10) {
+                    // User is online
+                    $onlineStatus = "<span class='text-success small'>● Online</span>";
+                  } else {
+                    // User is offline; show last seen
+                    $formattedLastSeen = date("d M Y, h:i A", $lastSeen);
+                    $onlineStatus = "<span class='small text-muted'>Last seen: $formattedLastSeen</span>";
+                  }
+                }
                 echo
-                "
-                  <div class='d-flex justify-content-between align-items-center w-100 gap-2 p-2 bg-accent'>
+                "<div class='d-flex justify-content-between align-items-center w-100 gap-2 p-2 bg-accent'>
                     <div class='d-flex align-items-center gap-3'>
                       <img src='./Assets/$number.png' class='profile-pic' alt='profile'>
                       <div>
                         <p class='m-0 fw-bold'>$selectedUser</p>
-                        <span class='text-success small'>●</span><span class='small'>online</span>
+                        
+                        $onlineStatus
                       </div>
                     </div>
                     <div class='pe-3 ps-3 dropdown'>
@@ -256,7 +279,6 @@ if (isset($_GET['user'])) {
                   "
                 ?>
               </div>
-
               <!-- Chatbox body -->
               <div class="chatbox-body custom-h-80 d-flex justify-content-center align-items-center ps-2 pe-2 p-1" id="chatbox-body">
                 <div class="container-fluid d-flex flex-column gap-2 h-100  overflow-auto hide-scrollbar" id="chatbox-body-dispMsg">

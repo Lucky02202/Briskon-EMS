@@ -150,6 +150,10 @@
   height: 90% !important;
 }
 
+.custom-h-100 {
+  height: 100% !important;
+}
+
 /* profile image */
 .profile-pic {
   width: 50px;
@@ -194,6 +198,10 @@ ul li:hover {
   cursor: pointer;
 }
 
+.user-list-dropdown-item :hover {
+  background-color: #bfc1ff !important;
+}
+
 .chat-peek {
   white-space: nowrap;
   overflow: hidden;
@@ -217,6 +225,7 @@ ul li:hover {
 .chat-users::-webkit-scrollbar {
   display: none !important;
 }
+
 
 .send-button {
   right: 1.5rem;
@@ -334,6 +343,11 @@ input:focus {
 .chat-time {
   font-size: 8px !important;
   color: #4F4F4F;
+}
+
+.chat-time2 {
+  font-size: 12px !important;
+  color: #4F4F4F !important;
 }
 
 /* hide scrollbar */
