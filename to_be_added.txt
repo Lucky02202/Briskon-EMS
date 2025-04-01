@@ -1,7 +1,0 @@
-If the messages are empty then display
-
-echo "
-    <div class='fs-3 fw-semibold text-center text-gray d-flex align-items-center justify-content-center w-100 h-100' id='start_messaging'>
-      Start Messaging!!
-    </div>
-    ";

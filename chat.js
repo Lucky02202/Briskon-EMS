@@ -44,7 +44,12 @@ $(document).ready(function () {
     e.preventDefault();
     var sender = $("#sender").val();
     var receiver = $("#receiver").val();
-    var message = $("#message").val();
+    var message = $("#message").val().trim();
+
+    if (message === '') {
+      alert("Cannot send empty messages or spaces.")
+      return;
+    }
 
     console.log("Sending message via AJAX");
     $.ajax({
@@ -64,7 +69,7 @@ $(document).ready(function () {
 
   setInterval(() => {
     fetchMessage();
-    fetch('./update_last_seen.php');
+    fetch('update_last_seen.php');
   }, 3000);
 
 });

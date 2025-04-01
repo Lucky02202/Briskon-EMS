@@ -1,0 +1,17 @@
+Chat_Online_status table:
+CREATE TABLE chat_online_status (
+  emp_id int(11) NOT NULL AUTO_INCREMENT,
+  last_seen datetime DEFAULT NULL,
+  PRIMARY KEY (emp_id)
+)
+
+ALTER TABLE chat_online_status
+ADD CONSTRAINT fk_emp_id
+FOREIGN KEY (emp_id) REFERENCES employees(emp_id)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+// to import all existing employees from employees table to online_status table
+INSERT INTO chat_online_status (emp_id, last_seen)
+SELECT emp_id, NOW() FROM employees
+WHERE emp_id NOT IN (SELECT emp_id FROM chat_online_status);

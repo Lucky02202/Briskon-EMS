@@ -2,7 +2,7 @@
 
 session_start();
 include('db.php');
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION['email_id'])) {
   exit("you are not logged in.");
 }
 

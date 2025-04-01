@@ -3,21 +3,21 @@
 session_start();
 include 'db.php';
 
-if (isset($_SESSION['username'])) {
-  header("Location: ./chat.php");
+if (isset($_SESSION['email_id'])) {
+  header("Location: login.php");
   exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  $username = $_POST['username'];
+  $email = $_POST['email'];
   $password = $_POST['password'];
   // $profileImg = file_get_contents($_FILES['profileImg']['tmp_name']);
 
 
   // Check if username already exists
-  $sql = "SELECT * FROM users WHERE username = ?";
+  $sql = "SELECT * FROM employees WHERE email_id = ?";
   $stmt = $conn->prepare($sql);
-  $stmt->bind_param('s', $username);
+  $stmt->bind_param('s', $email);
   $stmt->execute();
   $result = $stmt->get_result();
 
@@ -25,13 +25,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $error = "Username already exists";
   } else {
     // Insert user into database
-    $stmt = $conn->prepare(("INSERT INTO users (username, password) VALUES (?,?)"));
+    $stmt = $conn->prepare(("INSERT INTO employees (email_id, password) VALUES (?,?)"));
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $stmt->bind_param('ss', $username, $password);
+    $stmt->bind_param('ss', $email, $hashedPassword);
 
     if ($stmt->execute()) {
-      $_SESSION['username'] = $username;
-      header("Location: ./chat.php");
+      $_SESSION['email_id'] = $email;
+      header("Location: ./login.php");
     } else {
       $error = "Registration Failed";
     }
@@ -81,7 +81,7 @@ $conn->close();
             </p>
           <?php endif; ?>
           <form method="post" class="d-flex flex-column align-items-center w-100 h-100" enctype="multipart/form-data">
-            <input class="login-input form-control bg-login-background rounded-5 custom-80" placeholder="Username" type="text" id="username" name="username" required><br>
+            <input class="login-input form-control bg-login-background rounded-5 custom-80" placeholder="email" type="email" id="email" name="email" required><br>
             <input class="login-input form-control bg-login-background rounded-5 custom-80" placeholder="Password" type="password" id="password" name="password" required><br>
             <!-- <div class="file-container text-white custom-80 rounded-4 d-flex flex-column gap-1 justify-content-start p-2">
               <p class="m-0 p-0 fw-light opacity-50">Upload Profile Picture</p>

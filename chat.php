@@ -2,19 +2,30 @@
 session_start();
 include("./db.php");
 
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION['email_id'])) {
   header("Location: ./login.php");
   exit();
 }
 
-$username = $_SESSION['username'];
+$email_id = $_SESSION['email_id'];
+$emp_id = $_SESSION['emp_id'];
+
+// user which we have selected from the chat list
 $selectedUser = "";
+$selectedUserId = "";
 
 
-if (isset($_GET['user'])) {
-  $selectedUser = $_GET['user'];
-  $number = $_GET['num'];
+if (isset($_GET['userName'])) {
+
+  // getting user details from url after it has been selected from the chat list.
+  $selectedUser = $_GET['userName'];
+  $selectedUserId = $_GET['user_id'];
+  $F_nameSql = "SELECT * from employees where emp_id = $emp_id";
+  $result = $conn->query($F_nameSql);
+  $row = $result->fetch_assoc();
+  $fname = $row['f_name'];
   $selectedUser = mysqli_real_escape_string($conn, $selectedUser);
+  $selectedUserId = mysqli_real_escape_string($conn, $selectedUserId);
   $showchatbox = true;
 } else {
   $showchatbox = false;
@@ -99,7 +110,7 @@ if (isset($_GET['user'])) {
         </li>
         <li class="p-2 w-75 rounded-4 fw-bold d-flex gap-2 align-items-center dropdown">
           <i class="fa-solid fa-circle-user custom-10"></i>
-          <p class="m-0 p-0 custom-90 text-start" id='chatbox-options' data-bs-toggle='dropdown' aria-expanded='false'>My Account</p>
+          <p class="m-0 p-0 custom-90 text-start" id='chatbox-options' data-bs-toggle='dropdown' aria-expanded='false'>My Account <span class="chat-time2">(<?php echo $fname; ?>)</span></p>
           <ul class='dropdown-menu' aria-labelledby='chatbox-options'>
             <li><button class='dropdown-item'>Close chat</button></li>
             <li><a class='dropdown-item' class='btn' href='logout.php'>Logout</a></li>
@@ -130,40 +141,6 @@ if (isset($_GET['user'])) {
 
             <!-- Chat Options -->
             <div class="container-fluid d-flex justify-content-between position-relative">
-              <!-- 
-              <div class="box rounded-3 d-flex justify-content-center align-items-center " id="user-list-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fa-solid fa-plus"></i>
-                <ul class="dropdown-user-list dropdown-menu custom-90 bg-main p-0 m-0 vh-75 hide-scrollbar p-1" aria-labelledby="user-list-dropdown" style="max-height: 60vh; overflow: auto;">
-                  php code for dropdown
-                  php
-                  $sql = "SELECT username from users where username != '$username' order by username";
-                  $random = getRandomIntInclusive(1, 6);
-                  $result = $conn->query($sql);
-                  if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                      $randomNumber = getRandomIntInclusive(1, 6);
-                      $user = $row['username'];
-                      $user = ucfirst($user);
-                      echo "
-                        <li class='user-list-dropdown-item w-100 bg-accent user-list-item mb-1'>
-                          <div class='d-flex gap-1 align-items-center p-1'>
-                            <div class='user-image custom-20 p-1'>
-                              <img src='Assets/1.png'
-                                alt='user'
-                                class='img-fluid rounded-circle'
-                                style='width: 100%; height: 100%; object-fit: cover; /* Or use 'contain' if you don't want cropping */ display: block;'>
-                            </div>
-                            <div class='d-flex flex-column justify-content-between custom-80'>
-                              <p class='username m-0 p-0 fw-bold '>$user</p>
-                            </div>
-                          </div>
-                        </li>";
-                    }
-                  }
-                  ?>
-                </ul>
-              </div>
-               -->
               <div class="box rounded-3 d-flex justify-content-center align-items-center">
                 <i class="fa-solid fa-box-archive"></i>
               </div>
@@ -182,39 +159,31 @@ if (isset($_GET['user'])) {
 
               <!-- Users  -->
               <?php
-              // function to fetch random profile pic
-              function getRandomIntInclusive($min, $max)
-              {
-                $min = ceil($min);
-                $max = floor($max);
-                return rand($min, $max);
-              }
               // Fetch all users except current user
-              $sql = "SELECT username from users where username != '$username' order by username";
+              $sql = "SELECT * from employees where email_id != '$email_id' order by f_name";
               $result = $conn->query($sql);
               if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
-                  $randomNumber = getRandomIntInclusive(1, 6);
-                  $user = $row['username'];
-                  $user = ucfirst($user);
+                  // $randomNumber = getRandomIntInclusive(1, 6);
+                  $chatUserName = trim($row['f_name']);
+                  $user_emp_id = $row['emp_id'];
+                  $chatUserName = ucfirst($chatUserName);
 
                   // Fetch the latest message between the current user and this user
                   $latestMsgQuery = "SELECT message FROM chat_messages 
-                      WHERE (sender='$username' AND receiver='$user') 
-                          OR (sender='$user' AND receiver='$username') 
+                      WHERE (sender='$emp_id' AND receiver='$user_emp_id') 
+                          OR (sender='$user_emp_id' AND receiver='$emp_id') 
                         ORDER BY id DESC LIMIT 1";
                   $msgResult = $conn->query($latestMsgQuery);
-                  $latestMessage = ($msgResult->num_rows > 0) ? $msgResult->fetch_assoc()['message'] : " ";
-                  if ($msgResult->num_rows > 0) {
-                  }
+                  $latestMessage = ($msgResult->num_rows > 0) ? $msgResult->fetch_assoc()['message'] : "Start Chatting!";
                   echo "
-                    <a class='text-reset text-decoration-none' href='chat.php?user=$user&num=$randomNumber'>
+                    <a class='text-reset text-decoration-none' href='chat.php?user_id=$user_emp_id&userName=$chatUserName'>
                       <div class='user d-flex align-items-center p-2 rounded-3 gap-2 h-100'>
                         <div class='user-image custom-20'>
-                            <img src='./Assets/$randomNumber.png' alt='user' class='img-fluid rounded-circle profile-pic'>
+                            <img src='./Assets/5.png' alt='user' class='img-fluid rounded-circle profile-pic'>
                         </div>
                         <div class='d-flex flex-column justify-content-between custom-60 h-100'>
-                          <p class='username m-0 p-0 fw-bold '>$user</p>
+                          <p class='username m-0 p-0 fw-bold '>$chatUserName</p>
                           <p class='chat-peek m-0 p-0 fs-6 overflow-hidden text-black-50'>$latestMessage</p>
                         </div>
                         <div class='d-flex flex-column align-items-end justify-content-between custom-20 h-100'>
@@ -233,13 +202,13 @@ if (isset($_GET['user'])) {
           <!-- Chat Container Sidebar End -->
 
           <!-- Chatbox -->
-          <div class="chatbox overflow-auto custom-75 bg-tertiary rounded-4 d-flex flex-column border gap-2   border-1" id="chatbox">
+          <div class="chatbox overflow-auto custom-75 bg-tertiary rounded-4 d-flex flex-column border gap-2 border-1" id="chatbox">
             <?php if ($showchatbox): ?>
               <!-- Chatbox header -->
               <div class="chatbox-header d-flex align-items-center justify-content-between custom-h-10"
                 id="chatbox-header">
                 <?php
-                $sql = "SELECT last_seen FROM users WHERE username = '$selectedUser'";
+                $sql = "SELECT last_seen FROM chat_online_status WHERE emp_id = '$selectedUserId'";
                 $result = $conn->query($sql);
                 $onlineStatus = '';
                 if ($result->num_rows > 0) {
@@ -259,10 +228,9 @@ if (isset($_GET['user'])) {
                 echo
                 "<div class='d-flex justify-content-between align-items-center w-100 gap-2 p-2 bg-accent'>
                     <div class='d-flex align-items-center gap-3'>
-                      <img src='./Assets/$number.png' class='profile-pic' alt='profile'>
+                      <img src='./Assets/1.png' class='profile-pic' alt='profile'>
                       <div>
                         <p class='m-0 fw-bold'>$selectedUser</p>
-                        
                         $onlineStatus
                       </div>
                     </div>
@@ -293,17 +261,19 @@ if (isset($_GET['user'])) {
                 <div class="container-fluid d-flex align-items-center position-relative"
                   id="message-input">
                   <form class="chat-form w-100 h-100 d-flex align-items-center" id="chat-form">
-                    <input type="hidden" id="sender" value="<?php echo $username; ?>">
-                    <input type="hidden" id="receiver" value="<?php echo $selectedUser; ?>">
+                    <input type="hidden" id="sender" value="<?php echo $emp_id; ?>">
+                    <input type="hidden" id="receiver" value="<?php echo $selectedUserId; ?>">
                     <div class="d-flex justify-content-center align-items-center h-100 pe-3">
                       <i class="fa-solid fa-paperclip fa-xl "></i>
                     </div>
+                    <span id="emailError" style="color:red; font-size:12px;"></span><br>
                     <input type="text"
                       id="message"
                       class="form-control bg-accent pe-5"
                       placeholder="Type a message"
-                      aria-label="Type a message">
-                    <button type="submit" class="send-button btn bg-accent rounded-3 p-0 m-0 position-absolute">
+                      aria-label="Type a message"
+                      required>
+                    <button type=" submit" class="send-button btn bg-accent rounded-3 p-0 m-0 position-absolute">
                       <i class="fa-solid fa-paper-plane fa-xl"></i>
                     </button>
                   </form>

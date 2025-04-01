@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "briskon_chat";
+$dbname = "actionbr_staging";
 
 
 $conn = new mysqli($servername, $username, $password, $dbname);

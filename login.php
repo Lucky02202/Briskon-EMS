@@ -3,24 +3,39 @@
 session_start();
 include('./db.php');
 
-if (isset($_SESSION['username'])) {
+if (isset($_SESSION['email_id'])) {
   header("Location: ./chat.php");
   exit();
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $username = $_POST['username'];
+  $email_id = $_POST['email'];
   $password = $_POST['password'];
 
-  $sql = "SELECT * FROM users where username='$username' AND password='$password'";
+  $sql = "SELECT * FROM employees where email_id = '$email_id'";
   $result = $conn->query($sql);
   if ($result->num_rows == 1) {
-    $_SESSION['username'] = $username;
-    header("Location: ./chat.php");
-    exit();
-  } else {
-    $error = "Invalid Username or Password.";
+    $row = $result->fetch_assoc();
+    $hashedPassword = $row['password'];
+    $emp_id = $row['emp_id'];
+
+    if (password_verify($password, $hashedPassword)) {
+      $_SESSION['email_id'] = $email_id;
+      $_SESSION['emp_id'] = $emp_id;
+      header("Location: chat.php");
+    } else {
+      header("Location: fail.php");
+    }
   }
+  // $sql = "SELECT * FROM employees where email_id ='$email' AND password='$password'";
+  // $result = $conn->query($sql);
+  // if ($result->num_rows == 1) {
+  //   $_SESSION['username'] = $email;
+  //   header("Location: ./chat.php");
+  //   exit();
+  // } else {
+  //   $error = "Invalid Username or Password.";
+  // }
 }
 ?>
 
@@ -64,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </p>
           <?php endif; ?>
           <form method="post" class="d-flex flex-column  align-items-center w-100 h-100">
-            <input class="login-input form-control bg-login-background rounded-5 custom-80" placeholder="Username" type="text" id="username" name="username" required><br>
+            <input class="login-input form-control bg-login-background rounded-5 custom-80" placeholder="email" type="email" id="email" name="email" required><br>
             <input class="login-input form-control bg-login-background rounded-5 custom-80" placeholder="Password" type="password" id="password" name="password" required><br>
             <button type="submit" class="login-button btn-outline-danger p-2 pe-3 ps-3 rounded-5 text-white fw-semibold">Login</button>
           </form>

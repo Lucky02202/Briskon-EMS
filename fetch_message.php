@@ -2,7 +2,7 @@
 session_start();
 include("db.php");
 
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION['email_id'])) {
   exit("You are not logged in");
 }
 
@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-      if ($row['sender'] == $_SESSION['username']) {
+      if ($row['sender'] == $_SESSION['emp_id']) {
         echo '
         <div class=" d-flex gap-2 align-self-end bg-accent-dark rounded-3 p-1 ps-2">
           <div class="h-100 d-flex flex-wrap align-items-center ">' . $row["message"] . '</div>
