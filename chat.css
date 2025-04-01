@@ -354,3 +354,7 @@ input:focus {
 .hide-scrollbar::-webkit-scrollbar {
   display: none !important;
 }
+
+.hidden {
+  opacity: 0 !important;
+}

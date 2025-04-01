@@ -100,7 +100,7 @@ if (isset($_GET['userName'])) {
           <i class="fa-solid fa-table-list custom-10"></i>
           <p class="m-0 p-0 custom-90 text-start">Holiday List</p>
         </li>
-        <li class="p-2 w-75 rounded-4 fw-bold d-flex gap-2 align-items-center bg-accent">
+        <li class="p-2 w-75 rounded-4 fw-bold d-flex gap-2 align-items-center bg-accent ">
           <i class="fa-solid fa-message custom-10"></i>
           <p class="m-0 p-0 custom-90 text-start">Chats</p>
         </li>
@@ -110,7 +110,7 @@ if (isset($_GET['userName'])) {
         </li>
         <li class="p-2 w-75 rounded-4 fw-bold d-flex gap-2 align-items-center dropdown">
           <i class="fa-solid fa-circle-user custom-10"></i>
-          <p class="m-0 p-0 custom-90 text-start" id='chatbox-options' data-bs-toggle='dropdown' aria-expanded='false'>My Account <span class="chat-time2">(<?php echo $fname; ?>)</span></p>
+          <p class="m-0 p-0 custom-90 text-start" id='chatbox-options' data-bs-toggle='dropdown' aria-expanded='false'>My Account <span class="chat-time2">(<?php echo $fname ?>)</span></p>
           <ul class='dropdown-menu' aria-labelledby='chatbox-options'>
             <li><button class='dropdown-item'>Close chat</button></li>
             <li><a class='dropdown-item' class='btn' href='logout.php'>Logout</a></li>
@@ -176,6 +176,17 @@ if (isset($_GET['userName'])) {
                         ORDER BY id DESC LIMIT 1";
                   $msgResult = $conn->query($latestMsgQuery);
                   $latestMessage = ($msgResult->num_rows > 0) ? $msgResult->fetch_assoc()['message'] : "Start Chatting!";
+
+                  // Fetch unread messages count for each user
+                  $unreadMsgQuery = "SELECT COUNT(*) AS unread_count FROM chat_messages 
+                  WHERE sender = '$user_emp_id' 
+                  AND receiver = '$emp_id' 
+                  AND is_read = 0";
+                  $unreadResult = $conn->query($unreadMsgQuery);
+                  $unreadCount = ($unreadResult->num_rows > 0) ? $unreadResult->fetch_assoc()['unread_count'] : 0;
+                  if ($unreadCount == 0) {
+                    $unreadCount = "";
+                  }
                   echo "
                     <a class='text-reset text-decoration-none' href='chat.php?user_id=$user_emp_id&userName=$chatUserName'>
                       <div class='user d-flex align-items-center p-2 rounded-3 gap-2 h-100'>
@@ -183,11 +194,11 @@ if (isset($_GET['userName'])) {
                             <img src='./Assets/5.png' alt='user' class='img-fluid rounded-circle profile-pic'>
                         </div>
                         <div class='d-flex flex-column justify-content-between custom-60 h-100'>
-                          <p class='username m-0 p-0 fw-bold '>$chatUserName</p>
+                          <p class='username chat-peek m-0 p-0 fw-bold'>$chatUserName</p>
                           <p class='chat-peek m-0 p-0 fs-6 overflow-hidden text-black-50'>$latestMessage</p>
                         </div>
                         <div class='d-flex flex-column align-items-end justify-content-between custom-20 h-100'>
-                          <div class=' messages-count'>3</div>
+                          <div class='messages-count' style=" . ($unreadCount > 0 ? '' : 'opacity:0;') . ">$unreadCount</div>
                           <div class='chat-time2'>11:20</div>
                         </div>
                       </div>
