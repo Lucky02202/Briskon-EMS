@@ -10,9 +10,9 @@ function hideChatBox() {
   chatbox_footer.classList.add("myClass");
 }
 
-function addClass() {
-  document.getElementById("chatbox").classList.add("myClass");
-}
+// function addClass() {
+//   document.getElementById("chatbox").classList.add("myClass");
+// }
 
 function fetchMessage(callback = null) {
   var sender = $('#sender').val();
@@ -37,6 +37,17 @@ function scrollChatToBottom() {
 }
 
 $(document).ready(function () {
+
+
+  // var chatLinks = document.getElementsByClassName("chat-link");
+  // Array.from(chatLinks).forEach(function (element) {
+  //   element.addEventListener("click", function (e) {
+  //     e.preventDefault();
+  //     var url = this.getAttribute('href');
+  //     history.pushState(null, null, url);
+  //   });
+  // });
+
   // fetch messages every 3 seconds
   fetchMessage(scrollChatToBottom);
 

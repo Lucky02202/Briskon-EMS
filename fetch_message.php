@@ -34,4 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       }
     }
   }
+
+  $updateReadMsgs = "UPDATE chat_messages SET is_read = 1  WHERE (sender='$sender' AND receiver='$receiver')";
+  $conn->query($updateReadMsgs);
 }

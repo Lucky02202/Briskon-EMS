@@ -9,27 +9,6 @@ if (!isset($_SESSION['email_id'])) {
 
 $email_id = $_SESSION['email_id'];
 $emp_id = $_SESSION['emp_id'];
-
-// user which we have selected from the chat list
-$selectedUser = "";
-$selectedUserId = "";
-
-
-if (isset($_GET['userName'])) {
-
-  // getting user details from url after it has been selected from the chat list.
-  $selectedUser = $_GET['userName'];
-  $selectedUserId = $_GET['user_id'];
-  $F_nameSql = "SELECT * from employees where emp_id = $emp_id";
-  $result = $conn->query($F_nameSql);
-  $row = $result->fetch_assoc();
-  $fname = $row['f_name'];
-  $selectedUser = mysqli_real_escape_string($conn, $selectedUser);
-  $selectedUserId = mysqli_real_escape_string($conn, $selectedUserId);
-  $showchatbox = true;
-} else {
-  $showchatbox = false;
-}
 ?>
 
 <!DOCTYPE html>
@@ -110,7 +89,17 @@ if (isset($_GET['userName'])) {
         </li>
         <li class="p-2 w-75 rounded-4 fw-bold d-flex gap-2 align-items-center dropdown">
           <i class="fa-solid fa-circle-user custom-10"></i>
-          <p class="m-0 p-0 custom-90 text-start" id='chatbox-options' data-bs-toggle='dropdown' aria-expanded='false'>My Account <span class="chat-time2">(<?php echo $fname ?>)</span></p>
+          <p class="m-0 p-0 custom-90 text-start" id='chatbox-options' data-bs-toggle='dropdown' aria-expanded='false'>My Account
+            <span class="chat-time2">
+              (<?php
+                $sql = "SELECT f_name from employees where emp_id = $emp_id";
+                $result = $conn->query($sql);
+                $row = $result->fetch_assoc();
+                $fname = $row['f_name'];
+                echo $fname;
+                ?>)
+            </span>
+          </p>
           <ul class='dropdown-menu' aria-labelledby='chatbox-options'>
             <li><button class='dropdown-item'>Close chat</button></li>
             <li><a class='dropdown-item' class='btn' href='logout.php'>Logout</a></li>
@@ -187,8 +176,12 @@ if (isset($_GET['userName'])) {
                   if ($unreadCount == 0) {
                     $unreadCount = "";
                   }
+
                   echo "
-                    <a class='text-reset text-decoration-none' href='chat.php?user_id=$user_emp_id&userName=$chatUserName'>
+                    <a class='chat-link text-reset text-decoration-none' 
+                      href='' 
+                      data-user_id='$user_emp_id' 
+                      data-username='$chatUserName'>
                       <div class='user d-flex align-items-center p-2 rounded-3 gap-2 h-100'>
                         <div class='user-image custom-20'>
                             <img src='./Assets/5.png' alt='user' class='img-fluid rounded-circle profile-pic'>
@@ -199,7 +192,7 @@ if (isset($_GET['userName'])) {
                         </div>
                         <div class='d-flex flex-column align-items-end justify-content-between custom-20 h-100'>
                           <div class='messages-count' style=" . ($unreadCount > 0 ? '' : 'opacity:0;') . ">$unreadCount</div>
-                          <div class='chat-time2'>11:20</div>
+                          <div class='chat-time2'>10:20</div>
                         </div>
                       </div>
                     </a>";
@@ -214,14 +207,16 @@ if (isset($_GET['userName'])) {
 
           <!-- Chatbox -->
           <div class="chatbox overflow-auto custom-75 bg-tertiary rounded-4 d-flex flex-column border gap-2 border-1" id="chatbox">
-            <?php if ($showchatbox): ?>
-              <!-- Chatbox header -->
-              <div class="chatbox-header d-flex align-items-center justify-content-between custom-h-10"
-                id="chatbox-header">
-                <?php
+
+            <!-- Chatbox header -->
+            <div class="chatbox-header d-flex align-items-center justify-content-between custom-h-10"
+              id="chatbox-header">
+              <?php
+              $onlineStatus = '';
+              if (isset($selectedUser)) {
+                $selectedUserId = $_GET['user_id'];
                 $sql = "SELECT last_seen FROM chat_online_status WHERE emp_id = '$selectedUserId'";
                 $result = $conn->query($sql);
-                $onlineStatus = '';
                 if ($result->num_rows > 0) {
                   $row = $result->fetch_assoc();
                   $lastSeen = strtotime($row['last_seen']);
@@ -236,13 +231,14 @@ if (isset($_GET['userName'])) {
                     $onlineStatus = "<span class='small text-muted'>Last seen: $formattedLastSeen</span>";
                   }
                 }
-                echo
-                "<div class='d-flex justify-content-between align-items-center w-100 gap-2 p-2 bg-accent'>
+              }
+              echo
+              "<div class='d-flex justify-content-between align-items-center w-100 gap-2 p-2 bg-accent'>
                     <div class='d-flex align-items-center gap-3'>
                       <img src='./Assets/1.png' class='profile-pic' alt='profile'>
                       <div>
-                        <p class='m-0 fw-bold'>$selectedUser</p>
-                        $onlineStatus
+                        <p class='m-0 fw-bold' id='selected-username'></p>
+                        <span id='onlinestatus'><span>
                       </div>
                     </div>
                     <div class='pe-3 ps-3 dropdown'>
@@ -256,41 +252,40 @@ if (isset($_GET['userName'])) {
                     </div>
                   </div>
                   "
-                ?>
-              </div>
-              <!-- Chatbox body -->
-              <div class="chatbox-body custom-h-80 d-flex justify-content-center align-items-center ps-2 pe-2 p-1" id="chatbox-body">
-                <div class="container-fluid d-flex flex-column gap-2 h-100  overflow-auto hide-scrollbar" id="chatbox-body-dispMsg">
+              ?>
+            </div>
+            <!-- Chatbox body -->
+            <div class="chatbox-body custom-h-80 d-flex justify-content-center align-items-center ps-2 pe-2 p-1" id="chatbox-body">
+              <div class="container-fluid d-flex flex-column gap-2 h-100  overflow-auto hide-scrollbar" id="chatbox-body-dispMsg">
 
-                  <!-- Dynamic content will be inserted here -->
+                <!-- Dynamic content will be inserted here -->
 
-                </div>
               </div>
+            </div>
 
-              <!-- Chatbox footer -->
-              <div class="chatbox-footer custom-h-10 d-flex align-items-center" id="chatbox-footer">
-                <div class="container-fluid d-flex align-items-center position-relative"
-                  id="message-input">
-                  <form class="chat-form w-100 h-100 d-flex align-items-center" id="chat-form">
-                    <input type="hidden" id="sender" value="<?php echo $emp_id; ?>">
-                    <input type="hidden" id="receiver" value="<?php echo $selectedUserId; ?>">
-                    <div class="d-flex justify-content-center align-items-center h-100 pe-3">
-                      <i class="fa-solid fa-paperclip fa-xl "></i>
-                    </div>
-                    <span id="emailError" style="color:red; font-size:12px;"></span><br>
-                    <input type="text"
-                      id="message"
-                      class="form-control bg-accent pe-5"
-                      placeholder="Type a message"
-                      aria-label="Type a message"
-                      required>
-                    <button type=" submit" class="send-button btn bg-accent rounded-3 p-0 m-0 position-absolute">
-                      <i class="fa-solid fa-paper-plane fa-xl"></i>
-                    </button>
-                  </form>
-                </div>
+            <!-- Chatbox footer -->
+            <div class="chatbox-footer custom-h-10 d-flex align-items-center" id="chatbox-footer">
+              <div class="container-fluid d-flex align-items-center position-relative"
+                id="message-input">
+                <form class="chat-form w-100 h-100 d-flex align-items-center" id="chat-form">
+                  <input type="hidden" id="sender" value="<?php echo $emp_id; ?>">
+                  <input type="hidden" id="receiver" value="<?php echo "1"; ?>">
+                  <div class="d-flex justify-content-center align-items-center h-100 pe-3">
+                    <i class="fa-solid fa-paperclip fa-xl "></i>
+                  </div>
+                  <span id="emailError" style="color:red; font-size:12px;"></span><br>
+                  <input type="text"
+                    id="message"
+                    class="form-control bg-accent pe-5"
+                    placeholder="Type a message"
+                    aria-label="Type a message"
+                    required>
+                  <button type=" submit" class="send-button btn bg-accent rounded-3 p-0 m-0 position-absolute">
+                    <i class="fa-solid fa-paper-plane fa-xl"></i>
+                  </button>
+                </form>
               </div>
-            <?php endif; ?>
+            </div>
           </div>
           <!-- Chatbox End -->
         </div>
@@ -300,7 +295,8 @@ if (isset($_GET['userName'])) {
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="chat.js"></script>
+  <!-- <script src="chat.js"></script> -->
+  <script src="chat2.js"></script>
   <script src="https://kit.fontawesome.com/74954d4a6a.js"
     crossorigin="anonymous"></script>
 </body>
